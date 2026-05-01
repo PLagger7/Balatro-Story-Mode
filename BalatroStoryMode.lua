@@ -1,3 +1,20 @@
+SMODS.Atlas{
+    key = 'repaints',
+    path = 'Jokers.png',
+    px = 71,
+    py = 95
+}
+    local bool = true
+SMODS.current_mod.calculate = function (self, context)
+    if G.GAME.blind and G.GAME.current_round.hands_left ~= 0 and G.GAME.chips >= G.GAME.blind.chips and bool then
+        if math.random() >= .9 then
+        G.GAME.blind.chips = G.GAME.chips + 1
+        else bool = false
+        end
+    end
+    if context.before then bool = true end
+end
+
 SMODS.Joker:take_ownership('joker',
 {
     cost = 69,
@@ -26,3 +43,17 @@ SMODS.Joker:take_ownership('baron',
 },
 true
 )
+
+SMODS.Joker:take_ownership('smiley',
+{
+    atlas = 'repaints',
+    pos = {x=6, y=15}
+},
+true
+)
+
+--[[
+TO DO
+rocket takes off after some amount of time
+adding lusty joker makes your deck hearts
+--]]
