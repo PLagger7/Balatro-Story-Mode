@@ -1,0 +1,13 @@
+{
+    "id": "balatrostorymode",
+    "name": "Balatro Story Mode",
+    "author": ["PLagger"],
+    "description": "what if balala but story",
+    "prefix": "BStory",
+    "main_file": "BalatroStoryMode.lua",
+    "badge_colour": "b00b69",
+    "dependencies": [
+        "Steamodded (>=1.0.0~BETA-1606b)"
+    ],
+    "version": "0.0.1"
+}
