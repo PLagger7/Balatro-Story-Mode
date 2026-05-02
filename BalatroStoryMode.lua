@@ -52,6 +52,28 @@ SMODS.Joker:take_ownership('smiley',
 true
 )
 
+SMODS.Joker:take_ownership('rocket',
+{
+    config = {extra = {dollars = 1, increase = 2, take_off = 4}},
+    calculate = function (self, card, context)
+        if context.setting_blind then
+            card.ability.extra.take_off = card.ability.extra.take_off - 1
+        end
+        if context.end_of_round and card.ability.extra.take_off <= 0 then
+        card.disable_align = true
+        card.T.y = card.T.y - 0.5
+        G.E_MANAGER:add_event(Event({
+            func = function ()
+                SMODS.destroy_cards({card}, true, false, false)
+                return true
+            end
+        }))
+        end
+    end
+},
+true
+)
+
 --[[
 TO DO
 rocket takes off after some amount of time
