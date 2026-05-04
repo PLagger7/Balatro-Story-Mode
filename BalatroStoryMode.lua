@@ -4,7 +4,16 @@ SMODS.Atlas{
     px = 71,
     py = 95
 }
-    local bool = true
+
+local left_clicked = Controller.L_cursor_press
+function Controller.L_cursor_press(x, y)
+    left_clicked(x, y)
+    if G and G.jokers and G.jokers.cards and not G.SETTINGS.paused then
+        SMODS.calculate_context({BStory_click = true})
+    end
+end
+
+local bool = true --Occasionally make the Blind require 1 extra chip (not final hand)
 SMODS.current_mod.calculate = function (self, context)
     if G.GAME.blind and G.GAME.current_round.hands_left ~= 0 and G.GAME.chips >= G.GAME.blind.chips and bool then
         if math.random() >= .9 then
@@ -74,8 +83,28 @@ SMODS.Joker:take_ownership('rocket',
 true
 )
 
+SMODS.Joker:take_ownership('chaos',
+{
+    config = {extra = 1},
+    calculate = function (self, card, context)
+        if G.shop and card.ability.extra > 0 and context.BStory_click then
+        G.FUNCS.reroll_shop()
+        card.ability.extra = card.ability.extra - 1
+        end
+
+        if context.setting_blind then
+            card.ability.extra = 1
+        end
+
+    end
+
+},
+true
+)
+
 --[[
 TO DO
-rocket takes off after some amount of time
+rocket takes off after some amount of time -maybe make it look better?
 adding lusty joker makes your deck hearts
+chaos rerolls shop when u clcik
 --]]
