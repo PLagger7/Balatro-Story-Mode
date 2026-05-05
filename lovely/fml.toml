@@ -1,0 +1,20 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 1 # Needed to not break SMODS
+
+[[patches]]
+[patches.pattern]
+target = "cardarea.lua"
+pattern = "if not card.states.drag.is then"
+position = "at"
+payload = "if not card.states.drag.is and not card.disable_align then"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "text = localize('k_nope_ex'),"
+position = "at"
+payload = "text = 'Maybe?',"
+match_indent = true

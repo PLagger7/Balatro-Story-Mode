@@ -102,9 +102,49 @@ SMODS.Joker:take_ownership('chaos',
 true
 )
 
+SMODS.Joker:take_ownership('lusty_joker',
+{
+    add_to_deck = function (self, card, from_debuff)
+        for _, card in pairs(G.playing_cards) do
+                assert(SMODS.change_base(card, 'Hearts'))
+        end
+    end
+},
+true
+)
+SMODS.Joker:take_ownership('diet_cola',
+{
+    add_to_deck = function (self, card, from_debuff)
+        card:add_sticker('eternal', true)
+    end
+},
+true)
+
+
 --[[
 TO DO
-rocket takes off after some amount of time -maybe make it look better?
-adding lusty joker makes your deck hearts
-chaos rerolls shop when u clcik
+rocket takes off after some amount of time -maybe make it look better? -add explosion
+ask splatter permission to use the fisting art
+sillyheart oparadise
+square joker is triamnge now
+buff obleksik
+golden joker is actually pyrite joker, gives 1 dollar,
+juggler and drunkard art swap
+bean gives Bean quotes when triggered
+smiley face gives pricy air quotes
+gift card charges you per joker
+doc glases on BUll [sic]
+chekcered deck is clubs and diamonds
+idol buff (Each played    gives x2 Mult when scored) [sic]
+Hit The Road -> Hit Road The (makes screen trans colored)
+flower pot buff -> x3 Mult if poker hand [sic]
+wee joker becomes larger the more chips it has
+Four Fingers nerf -> All Flushes and Straights can be made with  cards
+remove Mime text, add video 
+negative interest while in debt
+loyalty card buff -> x4 Mult every hands played
+8 ball art revert
+Needle is Phyrexia
+scary face jumpscare sometimes
+shaking space joker makes it sick
 --]]
