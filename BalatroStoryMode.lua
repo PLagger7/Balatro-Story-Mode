@@ -118,13 +118,21 @@ SMODS.Joker:take_ownership('diet_cola',
         card:add_sticker('eternal', true)
     end
 },
-true)
+true
+)
+
+SMODS.Joker:take_ownership('raised_fist',
+{
+    atlas = 'repaints',
+    pos = {x=8, y=2}
+},
+true
+)
 
 
 --[[
 TO DO
 rocket takes off after some amount of time -maybe make it look better? -add explosion
-ask splatter permission to use the fisting art
 sillyheart oparadise
 square joker is triamnge now
 buff obleksik
