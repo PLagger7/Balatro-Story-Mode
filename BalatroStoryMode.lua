@@ -129,6 +129,24 @@ SMODS.Joker:take_ownership('raised_fist',
 true
 )
 
+SMODS.Joker:take_ownership('square',
+{
+    atlas = 'repaints',
+    pos = {x=9, y=11},
+    cost = 3,
+    config = { extra = { chips = 0, chip_mod = 3 } },
+    calculate = function(self, card, context)
+        if context.before and not context.blueprint and #context.full_hand == 3 then
+            card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chip_mod
+            return {
+                message = localize('k_upgrade_ex'),
+                colour = G.C.CHIPS
+            }
+        end
+    end,
+},
+true
+)
 
 --[[
 TO DO

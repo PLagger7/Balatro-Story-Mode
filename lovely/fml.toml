@@ -10,11 +10,3 @@ pattern = "if not card.states.drag.is then"
 position = "at"
 payload = "if not card.states.drag.is and not card.disable_align then"
 match_indent = true
-
-[[patches]]
-[patches.pattern]
-target = "card.lua"
-pattern = "text = localize('k_nope_ex'),"
-position = "at"
-payload = "text = 'Maybe?',"
-match_indent = true
