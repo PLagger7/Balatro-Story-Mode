@@ -131,16 +131,29 @@ true
 
 SMODS.Joker:take_ownership('square',
 {
+    name = 'triangle',
     atlas = 'repaints',
     pos = {x=9, y=11},
+    pixel_size = { h = 71 },
     cost = 3,
     config = { extra = { chips = 0, chip_mod = 3 } },
+    loc_vars = function (self, info_queue, card)
+        return{
+            vars = {card.ability.extra.chips, card.ability.extra.chip_mod}
+        }
+    end,
     calculate = function(self, card, context)
         if context.before and not context.blueprint and #context.full_hand == 3 then
             card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chip_mod
             return {
                 message = localize('k_upgrade_ex'),
                 colour = G.C.CHIPS
+            }
+        end
+
+        if context.joker_main then
+            return{
+                chips = card.ability.extra.chips
             }
         end
     end,
@@ -152,7 +165,6 @@ true
 TO DO
 rocket takes off after some amount of time -maybe make it look better? -add explosion
 sillyheart oparadise
-square joker is triamnge now
 buff obleksik
 golden joker is actually pyrite joker, gives 1 dollar,
 juggler and drunkard art swap
@@ -173,4 +185,6 @@ loyalty card buff -> x4 Mult every hands played
 Needle is Phyrexia
 scary face jumpscare sometimes
 shaking space joker makes it sick
+extinct message says 'Pregnant!'
+food jokers go negative value
 --]]
