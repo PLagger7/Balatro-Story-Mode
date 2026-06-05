@@ -5,6 +5,15 @@ SMODS.Atlas{
     py = 95
 }
 
+SMODS.Atlas{
+    key = 'blinds',
+    atlas_table = 'ANIMATION_ATLAS',
+    frames = '21',
+    path = 'BlindChips.png',
+    px = 34,
+    py = 34
+}
+
 local left_clicked = Controller.L_cursor_press
 function Controller.L_cursor_press(x, y)
     left_clicked(x, y)
@@ -161,13 +170,44 @@ SMODS.Joker:take_ownership('square',
 true
 )
 
+SMODS.Blind:take_ownership('needle',
+{
+    atlas = 'blinds',
+    pos = {x=0, y=20}
+},
+true
+)
+
+SMODS.Joker:take_ownership('juggler',
+{
+    atlas = 'repaints',
+    pos = {x=0, y=1}
+},
+true
+)
+
+SMODS.Joker:take_ownership('drunkard',
+{
+    atlas = 'repaints',
+    pos = {x=1, y=1}
+},
+true
+)
+
+SMODS.Joker:take_ownership('8_ball',
+{
+    atlas = 'repaints',
+    pos = {x=0, y=5}
+},
+true
+)
+
 --[[
 TO DO
 rocket takes off after some amount of time -maybe make it look better? -add explosion
 sillyheart oparadise
 buff obleksik
 golden joker is actually pyrite joker, gives 1 dollar,
-juggler and drunkard art swap
 bean gives Bean quotes when triggered
 smiley face gives pricy air quotes
 gift card charges you per joker
@@ -181,10 +221,7 @@ Four Fingers nerf -> All Flushes and Straights can be made with  cards
 remove Mime text, add video 
 negative interest while in debt
 loyalty card buff -> x4 Mult every hands played
-8 ball art revert
-Needle is Phyrexia
 scary face jumpscare sometimes
 shaking space joker makes it sick
-extinct message says 'Pregnant!'
 food jokers go negative value
 --]]

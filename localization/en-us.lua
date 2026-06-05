@@ -254,9 +254,9 @@ return {
                 },
             },
             bl_needle={
-                name="The Needle",
+                name="Phyrexia",
                 text={
-                    "Play only 1 hand",
+                    "All Will Be One",
                 },
             },
             bl_ox={
@@ -301,8 +301,8 @@ return {
             bl_tooth={
                 name="The Tooth",
                 text={
-                    "Lose $1 per",
-                    "card played",
+                    "Do you pay",
+                    "the one?",
                 },
             },
             bl_wall={
@@ -3586,7 +3586,7 @@ return {
             k_enter_seed="Enter Seed",
             k_enter_text="Enter Text",
             k_eroded_ex="Eroded!",
-            k_extinct_ex="Extinct!",
+            k_extinct_ex="Pregnant!",
             k_face_cards="Face Cards",
             k_game_modifiers="Game Modifiers",
             k_gold="Gold",
