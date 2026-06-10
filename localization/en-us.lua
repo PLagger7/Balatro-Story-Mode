@@ -979,6 +979,13 @@ return {
                     "end of round",
                 },
             },
+            j_BStory_golden_pyrite={
+                name='Pyrite Joker',
+                text={
+                    "Earn {C:money}$#1#{} at",
+                    "end of round",              
+                }
+            },
             j_greedy_joker={
                 name="Greedy Joker",
                 text={

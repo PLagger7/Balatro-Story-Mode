@@ -14,6 +14,13 @@ SMODS.Atlas{
     py = 34
 }
 
+SMODS.Atlas{
+    key = 'misc',
+    path = 'misc.png',
+    px = 71,
+    py = 95
+}
+
 local left_clicked = Controller.L_cursor_press
 function Controller.L_cursor_press(x, y)
     left_clicked(x, y)
@@ -123,6 +130,7 @@ true
 )
 SMODS.Joker:take_ownership('diet_cola',
 {
+    eternal_compat = true,
     add_to_deck = function (self, card, from_debuff)
         card:add_sticker('eternal', true)
     end
@@ -202,12 +210,46 @@ SMODS.Joker:take_ownership('8_ball',
 true
 )
 
+SMODS.Joker:take_ownership('obelisk',
+{
+    config = {extra = 0.25, x_mult = 1}
+},
+true
+)
+
+SMODS.Joker:take_ownership('golden',
+{
+    atlas = 'repaints',
+    pos = {x=9, y=2},
+    config = {extra = 4, pyrite = false},
+    loc_vars = function (self, info_queue, card)
+        return{
+            vars = {card.ability.extra},
+            key = card.ability.pyrite and 'j_BStory_golden_pyrite' or nil
+        }
+    end,
+
+    add_to_deck = function (self, card, from_debuff)
+        card.ability.pyrite = true
+        card.ability.extra = 1
+    end,
+
+    draw = function (self, card, layer)
+        if (layer == 'card' or layer == 'both') and (card.config.center.discovered or card.bypass_discovery_center) then
+            if card.ability.pyrite then
+                card.children.center:set_sprite_pos({x=0, y=9})
+            else
+                card.children.center:set_sprite_pos({x=9, y=2})
+            end
+        end
+    end
+},
+true
+)
+
 --[[
 TO DO
-rocket takes off after some amount of time -maybe make it look better? -add explosion
 sillyheart oparadise
-buff obleksik
-golden joker is actually pyrite joker, gives 1 dollar,
 bean gives Bean quotes when triggered
 smiley face gives pricy air quotes
 gift card charges you per joker
