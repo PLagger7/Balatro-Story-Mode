@@ -14,14 +14,11 @@ SMODS.Atlas{
     py = 34
 }
 
-SMODS.Atlas{
-    key = 'misc',
-    path = 'misc.png',
-    px = 71,
-    py = 95
-}
+------------------
+--FUNCTIONS
+------------------
 
-local left_clicked = Controller.L_cursor_press
+local left_clicked = Controller.L_cursor_press --Add click context
 function Controller.L_cursor_press(x, y)
     left_clicked(x, y)
     if G and G.jokers and G.jokers.cards and not G.SETTINGS.paused then
@@ -29,8 +26,15 @@ function Controller.L_cursor_press(x, y)
     end
 end
 
-local bool = true --Occasionally make the Blind require 1 extra chip (not final hand)
+local run_info_func = G.FUNCS.run_info --Make blinds scale by 1% when run info is pressed
+function G.FUNCS.run_info()
+run_info_func()
+G.GAME.starting_params.ante_scaling = G.GAME.starting_params.ante_scaling + G.GAME.starting_params.ante_scaling*0.01
+end
+
+local bool = true 
 SMODS.current_mod.calculate = function (self, context)
+    --Occasionally make the Blind require 1 extra chip (not final hand)
     if G.GAME.blind and G.GAME.current_round.hands_left ~= 0 and G.GAME.chips >= G.GAME.blind.chips and bool then
         if math.random() >= .9 then
         G.GAME.blind.chips = G.GAME.chips + 1
@@ -39,6 +43,10 @@ SMODS.current_mod.calculate = function (self, context)
     end
     if context.before then bool = true end
 end
+
+------------------
+--JOKERS
+------------------
 
 SMODS.Joker:take_ownership('joker',
 {
@@ -53,7 +61,6 @@ SMODS.Joker:take_ownership('joker',
     end
 },
 true
-
 )
 
 SMODS.Joker:take_ownership('baron',
@@ -178,14 +185,6 @@ SMODS.Joker:take_ownership('square',
 true
 )
 
-SMODS.Blind:take_ownership('needle',
-{
-    atlas = 'blinds',
-    pos = {x=0, y=20}
-},
-true
-)
-
 SMODS.Joker:take_ownership('juggler',
 {
     atlas = 'repaints',
@@ -247,6 +246,18 @@ SMODS.Joker:take_ownership('golden',
 true
 )
 
+------------------
+--BLINDS
+------------------
+
+SMODS.Blind:take_ownership('needle',
+{
+    atlas = 'blinds',
+    pos = {x=0, y=20}
+},
+true
+)
+
 --[[
 TO DO
 sillyheart oparadise
@@ -259,7 +270,7 @@ idol buff (Each played    gives x2 Mult when scored) [sic]
 Hit The Road -> Hit Road The (makes screen trans colored)
 flower pot buff -> x3 Mult if poker hand [sic]
 wee joker becomes larger the more chips it has
-Four Fingers nerf -> All Flushes and Straights can be made with  cards
+Four Fingers nerf -> All Flushes and Straights cang be made with  cards
 remove Mime text, add video 
 negative interest while in debt
 loyalty card buff -> x4 Mult every hands played
