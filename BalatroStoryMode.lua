@@ -1,3 +1,6 @@
+------------------
+--FUNCTIONS
+------------------
 SMODS.Atlas{
     key = 'repaints',
     path = 'Jokers.png',
@@ -245,6 +248,31 @@ SMODS.Joker:take_ownership('golden',
 },
 true
 )
+
+SMODS.Joker:take_ownership('gift',
+{
+    calculate = function (self, card, context)
+        if context.end_of_round and not context.game_over and context.main_eval and not context.blueprint then
+            local fee = 0
+            for _, area in ipairs({ G.jokers, G.consumeables }) do
+                for _, other_card in ipairs(area.cards) do
+                    if other_card.set_cost then
+                        fee = fee + 1
+                        other_card.ability.extra_value = (other_card.ability.extra_value or 0) +
+                            card.ability.extra
+                        other_card:set_cost()
+                    end
+                end
+            end
+            return {
+                dollars = -fee,
+                message = localize('k_val_up'),
+                colour = G.C.MONEY
+            }
+        end
+    end
+},
+true)
 
 ------------------
 --BLINDS
