@@ -983,7 +983,7 @@ return {
                 name='Pyrite Joker',
                 text={
                     "Earn {C:money}$#1#{} at",
-                    "end of round",              
+                    "end of round",       
                 }
             },
             j_greedy_joker={

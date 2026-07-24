@@ -274,6 +274,56 @@ SMODS.Joker:take_ownership('gift',
 },
 true)
 
+SMODS.Joker:take_ownership('ice_cream',
+{
+    name = 'iced_cream', --with a d because i am being a d
+    atlas = 'repaints',
+    pos = {x=4,y=10},
+    config = { extra = { chips = 100, chip_mod = 5 }, melted = false },
+    loc_vars = function(self, info_queue, card)
+        return {
+            vars = { card.ability.extra.chips, card.ability.extra.chip_mod },
+        }
+    end,
+        calculate = function(self, card, context)
+        if context.after and not context.blueprint then
+            
+            if card.ability.extra.chips - card.ability.extra.chip_mod <= 0 and not card.ability.melted then
+                card.ability.melted = true
+                card.ability.extra.chips = card.ability.extra.chips - card.ability.extra.chip_mod
+                return {
+                    message = localize('k_melted_ex'),
+                    colour = G.C.CHIPS
+                }
+            else
+                card.ability.extra.chips = card.ability.extra.chips - card.ability.extra.chip_mod
+                return {
+                    message = localize { type = 'variable', key = 'a_chips_minus', vars = { card.ability.extra.chip_mod } },
+                    colour = G.C.CHIPS
+                }
+            end
+        end
+        if context.joker_main then
+            return {
+                chips = card.ability.extra.chips
+            }
+        end
+    end,
+
+    draw = function (self, card, layer)
+        if (layer == 'card' or layer == 'both') and (card.config.center.discovered or card.bypass_discovery_center) then
+            if card.ability.melted then
+                card.children.center:set_sprite_pos({x=0, y=16})
+            else
+                card.children.center:set_sprite_pos({x=4, y=10})
+            end
+        end
+    end
+},
+true
+)
+
+
 ------------------
 --BLINDS
 ------------------
@@ -291,7 +341,6 @@ TO DO
 sillyheart oparadise
 bean gives Bean quotes when triggered
 smiley face gives pricy air quotes
-gift card charges you per joker
 doc glases on BUll [sic]
 chekcered deck is clubs and diamonds
 idol buff (Each played    gives x2 Mult when scored) [sic]
