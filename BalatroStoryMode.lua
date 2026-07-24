@@ -287,7 +287,6 @@ SMODS.Joker:take_ownership('ice_cream',
     end,
         calculate = function(self, card, context)
         if context.after and not context.blueprint then
-            
             if card.ability.extra.chips - card.ability.extra.chip_mod <= 0 and not card.ability.melted then
                 card.ability.melted = true
                 card.ability.extra.chips = card.ability.extra.chips - card.ability.extra.chip_mod
@@ -323,7 +322,190 @@ SMODS.Joker:take_ownership('ice_cream',
 true
 )
 
+SMODS.Joker:take_ownership('turtle_bean',
+{
+    name = 'bean', --like the streamer!
+    atlas = 'repaints',
+    pos = {x=4, y=13},
+    config = { extra = { h_size = 5, h_mod = 1 }, eaten = false },
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.h_size, card.ability.extra.h_mod } }
+    end,
+    calculate = function(self, card, context)
+        if context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint then
+            if card.ability.extra.h_size - card.ability.extra.h_mod <= 0 and not card.ability.eaten then
+                card.ability.eaten = true
+                card.ability.extra.h_size = card.ability.extra.h_size - card.ability.extra.h_mod
+                G.hand:change_size(-card.ability.extra.h_mod)
+                return {
+                    message = localize('k_eaten_ex'),
+                    colour = G.C.FILTER
+                }
+            else
+                card.ability.extra.h_size = card.ability.extra.h_size - card.ability.extra.h_mod
+                G.hand:change_size(-card.ability.extra.h_mod)
+                return {
+                    message = localize { type = 'variable', key = 'a_handsize_minus', vars = { card.ability.extra.h_mod } },
+                    colour = G.C.FILTER
+                }
+            end
+        end
+    end,
+    add_to_deck = function(self, card, from_debuff)
+        G.hand:change_size(card.ability.extra.h_size)
+    end,
+    remove_from_deck = function(self, card, from_debuff)
+        G.hand:change_size(-card.ability.extra.h_size)
+    end,
 
+    draw = function (self, card, layer)
+        if (layer == 'card' or layer == 'both') and (card.config.center.discovered or card.bypass_discovery_center) then
+            if card.ability.eaten then
+                card.children.center:set_sprite_pos({x=1, y=16})
+            else
+                card.children.center:set_sprite_pos({x=4, y=13})
+            end
+        end
+    end
+},
+true
+)
+
+SMODS.Joker:take_ownership('popcorn',
+{
+    name = 'popped_corn', --past tense cuz i ated it
+    atlas = 'repaints',
+    pos = {x=1, y=15},
+    config = { extra = { mult_loss = 4, mult = 20 }, eaten = false },
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.mult, card.ability.extra.mult_loss } }
+    end,
+    calculate = function(self, card, context)
+        if context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint then
+            if card.ability.extra.mult - card.ability.extra.mult_loss <= 0 and not card.ability.eaten then
+                card.ability.eaten = true
+                card.ability.extra.mult = card.ability.extra.mult - card.ability.extra.mult_loss
+                return {
+                    message = localize('k_eaten_ex'),
+                    colour = G.C.RED
+                }
+            else
+                card.ability.extra.mult = card.ability.extra.mult - card.ability.extra.mult_loss
+                return {
+                    message = localize { type = 'variable', key = 'a_mult_minus', vars = { card.ability.extra.mult_loss } },
+                    colour = G.C.MULT
+                }
+            end
+        end
+        if context.joker_main then
+            return {
+                mult = card.ability.extra.mult
+            }
+        end
+    end,
+    draw = function (self, card, layer)
+        if (layer == 'card' or layer == 'both') and (card.config.center.discovered or card.bypass_discovery_center) then
+            if card.ability.eaten then
+                card.children.center:set_sprite_pos({x=2, y=16})
+            else
+                card.children.center:set_sprite_pos({x=1, y=15})
+            end
+        end
+    end
+},
+true
+)
+
+SMODS.Joker:take_ownership('ramen',
+{
+    name = 'rawmen', --:drool:
+    atlas = 'repaints',
+    pos = { x = 2, y = 15 },
+    config = { extra = { Xmult_loss = 0.01, Xmult = 2 } },
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.Xmult, card.ability.extra.Xmult_loss }, eaten = false }
+    end,
+    calculate = function(self, card, context)
+        if context.discard and not context.blueprint then
+            if card.ability.extra.Xmult - card.ability.extra.Xmult_loss <= 1 and not card.ability.eaten then
+                card.ability.eaten = true
+                card.ability.extra.Xmult = card.ability.extra.Xmult - card.ability.extra.Xmult_loss
+                return {
+                    message = localize('k_eaten_ex'),
+                    colour = G.C.FILTER
+                }
+            else
+                card.ability.extra.Xmult = card.ability.extra.Xmult - card.ability.extra.Xmult_loss
+                return {
+                    message = localize { type = 'variable', key = 'a_xmult_minus', vars = { card.ability.extra.Xmult_loss } },
+                    colour = G.C.RED,
+                    delay = 0.2
+                }
+            end
+        end
+        if context.joker_main then
+            return {
+                xmult = card.ability.extra.Xmult
+            }
+        end
+    end,
+    draw = function (self, card, layer)
+        if (layer == 'card' or layer == 'both') and (card.config.center.discovered or card.bypass_discovery_center) then
+            if card.ability.eaten then
+                card.children.center:set_sprite_pos({x=3, y=16})
+            else
+                card.children.center:set_sprite_pos({x=2, y=15})
+            end
+        end
+    end
+},
+true
+)
+
+SMODS.Joker:take_ownership('selzer',
+{
+    name = 'seltza', --thunk please learn how to spell kthx
+    atlas = 'repaints',
+    pos = { x = 3, y = 15 },
+    config = { extra = { hands_left = 10 }, drank = false },
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.hands_left } }
+    end,
+    calculate = function(self, card, context)
+        if context.repetition and context.cardarea == G.play then
+            return {
+                repetitions = 1
+            }
+        end
+        if context.after and not context.blueprint then
+            if card.ability.extra.hands_left - 1 <= 0 and not card.ability.drank then
+                card.ability.drank = true
+                card.ability.extra.hands_left = card.ability.extra.hands_left - 1
+                return {
+                    message = localize('k_drank_ex'),
+                    colour = G.C.FILTER
+                }
+            else
+                card.ability.extra.hands_left = card.ability.extra.hands_left - 1
+                return {
+                    message = card.ability.extra.hands_left .. '',
+                    colour = G.C.FILTER
+                }
+            end
+        end
+    end,
+    draw = function (self, card, layer)
+        if (layer == 'card' or layer == 'both') and (card.config.center.discovered or card.bypass_discovery_center) then
+            if card.ability.drank then
+                card.children.center:set_sprite_pos({x=4, y=16})
+            else
+                card.children.center:set_sprite_pos({x=3, y=15})
+            end
+        end
+    end 
+},
+true
+)
 ------------------
 --BLINDS
 ------------------
@@ -354,4 +536,5 @@ loyalty card buff -> x4 Mult every hands played
 scary face jumpscare sometimes
 shaking space joker makes it sick
 food jokers go negative value
+the goad -> the goat, bahhhhs when entering, then instantly win
 --]]

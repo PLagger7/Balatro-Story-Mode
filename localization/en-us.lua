@@ -206,7 +206,7 @@ return {
                 },
             },
             bl_goad={
-                name="The Goad",
+                name="The Goat",
                 text={
                     "All Spade cards",
                     "are debuffed",
