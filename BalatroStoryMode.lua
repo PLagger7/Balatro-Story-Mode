@@ -502,10 +502,20 @@ SMODS.Joker:take_ownership('selzer',
                 card.children.center:set_sprite_pos({x=3, y=15})
             end
         end
-    end 
+    end
 },
 true
 )
+
+SMODS.Joker:take_ownership('wee', {
+    draw = function(self, card, layer)
+        card.ability._orig_scale = card.ability._orig_scale or card.T.scale
+        card.T.scale = card.ability._orig_scale * (1 + card.ability.extra.chips/160)
+    end
+},
+true
+)
+
 ------------------
 --BLINDS
 ------------------
@@ -535,6 +545,5 @@ negative interest while in debt
 loyalty card buff -> x4 Mult every hands played
 scary face jumpscare sometimes
 shaking space joker makes it sick
-food jokers go negative value
 the goad -> the goat, bahhhhs when entering, then instantly win
 --]]
