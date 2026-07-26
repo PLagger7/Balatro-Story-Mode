@@ -1,5 +1,5 @@
 ------------------
---FUNCTIONS
+--ATLASES
 ------------------
 SMODS.Atlas{
     key = 'repaints',
@@ -25,6 +25,16 @@ SMODS.Atlas{
     px = 45,
     py = 26
 }
+
+------------------
+--SOUNDS
+------------------
+
+SMODS.Sound({
+    key = 'bahh',
+    path = 'bahh.ogg',
+    pitch = 1
+})
 
 ------------------
 --FUNCTIONS
@@ -565,6 +575,29 @@ SMODS.Blind:take_ownership('needle',
 true
 )
 
+SMODS.Blind:take_ownership('goad',
+{
+    calculate = function (self, blind, context)
+        if context.setting_blind then
+            play_sound('BStory_bahh', 1, 0.6)
+            G.E_MANAGER:add_event(Event({
+                blocking = false,
+                func = function()
+                    if G.STATE == G.STATES.SELECTING_HAND then
+                        G.GAME.chips = G.GAME.blind.chips
+                        G.STATE = G.STATES.HAND_PLAYED
+                        G.STATE_COMPLETE = true
+                        end_round()
+                    return true
+                end
+            end
+            }))
+            end
+        end
+},
+true
+)
+
 --[[
 TO DO
 bean gives Bean quotes when triggered
@@ -579,5 +612,4 @@ negative interest while in debt
 loyalty card buff -> x4 Mult every hands played
 scary face jumpscare sometimes
 shaking space joker makes it sick
-the goad -> the goat, bahhhhs when entering, then instantly win
 --]]
