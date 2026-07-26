@@ -1236,10 +1236,7 @@ return {
             },
             j_mime={
                 name="Mime",
-                text={
-                    "Retrigger all",
-                    "card {C:attention}held in",
-                    "{C:attention}hand{} abilities",
+                text={"",
                 },
             },
             j_misprint={

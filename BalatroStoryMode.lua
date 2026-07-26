@@ -17,6 +17,15 @@ SMODS.Atlas{
     py = 34
 }
 
+SMODS.Atlas{
+    key = 'straight_up_mimin_it',
+    atlas_table = 'ANIMATION_ATLAS',
+    frames = '153',
+    path = 'mimaron.png',
+    px = 45,
+    py = 26
+}
+
 ------------------
 --FUNCTIONS
 ------------------
@@ -507,10 +516,38 @@ SMODS.Joker:take_ownership('selzer',
 true
 )
 
-SMODS.Joker:take_ownership('wee', {
+SMODS.Joker:take_ownership('wee',
+{
     draw = function(self, card, layer)
         card.ability._orig_scale = card.ability._orig_scale or card.T.scale
         card.T.scale = card.ability._orig_scale * (1 + card.ability.extra.chips/160)
+    end
+},
+true
+)
+
+SMODS.Joker:take_ownership('mime',
+{
+    pantomime_sprite = nil,
+    loc_vars = function (self, info_queue, card)
+        if self.pantomime_sprite and self.pantomime_sprite.remove then
+            self.pantomime_sprite:remove()
+            self.pantomime_sprite = nil
+        end
+        self.pantomime_sprite = AnimatedSprite(0, 0,  3.5, 3.5 * 45 / 26, G.ANIMATION_ATLAS.BStory_straight_up_mimin_it, {x=0,y=0})
+
+        local main_end = {
+            {
+                n = G.UIT.C,
+                config = { align = "bm", minh = 2, padding = 0.1 },
+                nodes = {
+                    { n = G.UIT.O, config = { object = self.pantomime_sprite } },
+                }
+            }
+        }
+        return{
+            main_end = main_end
+        }
     end
 },
 true
@@ -530,7 +567,6 @@ true
 
 --[[
 TO DO
-sillyheart oparadise
 bean gives Bean quotes when triggered
 smiley face gives pricy air quotes
 doc glases on BUll [sic]
@@ -538,9 +574,7 @@ chekcered deck is clubs and diamonds
 idol buff (Each played    gives x2 Mult when scored) [sic]
 Hit The Road -> Hit Road The (makes screen trans colored)
 flower pot buff -> x3 Mult if poker hand [sic]
-wee joker becomes larger the more chips it has
-Four Fingers nerf -> All Flushes and Straights cang be made with  cards
-remove Mime text, add video 
+Four Fingers nerf -> All Flushes and Straights can be made with  cards
 negative interest while in debt
 loyalty card buff -> x4 Mult every hands played
 scary face jumpscare sometimes
