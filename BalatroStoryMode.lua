@@ -36,6 +36,17 @@ SMODS.Sound({
     pitch = 1
 })
 
+SMODS.Sound({
+    key = 'mark',
+    path = 'hello-everybody-my-name-is-markiplier.ogg',
+    pitch = 1,
+})
+
+SMODS.Sound({
+    key = 'splat',
+    path = 'ralsei-splat.ogg',
+    pitch = 1
+})
 ------------------
 --FUNCTIONS
 ------------------
@@ -563,6 +574,59 @@ SMODS.Joker:take_ownership('mime',
 true
 )
 
+SMODS.Joker:take_ownership('space',
+{
+    name = 'spacey',
+    atlas = 'repaints',
+    config = { extra = { odds = 4 }, shakey = 0, nausea = false },
+    loc_vars = function(self, info_queue, card)
+        local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'spacey')
+        return {
+            vars = { numerator, denominator },
+            key = card.ability.nausea and 'j_BStory_sick_space' or nil
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.before and SMODS.pseudorandom_probability(card, 'spacey', 1, card.ability.extra.odds)
+            and not card.ability.nausea then
+            return {
+                level_up = true,
+                message = localize('k_level_up_ex')
+            }
+        end
+    end,
+
+    draw = function (self, card, layer)
+        if (layer == 'card' or layer == 'both') and (card.config.center.discovered or card.bypass_discovery_center) then
+            if card.states.drag.is then
+                local deltaX = math.abs(card.T.x-card.VT.x)
+                local deltaY = math.abs(card.T.y-card.VT.y)
+                local delta = math.sqrt(deltaX ^ 2 + deltaY ^2)
+                if delta >= 0.67  then
+                    card.ability.shakey = card.ability.shakey + delta
+                    print(tostring(card.ability.shakey))
+                if card.ability.shakey >= 100 or card.ability.nausea then
+                    if not card.ability.nausea then
+                        play_sound('BStory_splat', 1, 2)
+                        card:juice_up()
+                        card.ability.nausea = true
+                    end
+                    card.children.center:set_sprite_pos({x=5, y=16})
+                else
+                    if not card.states.drag.is then
+                    card.ability.shakey = 0
+                    else card.ability.shakey = card.ability.shakey - 1
+                    end
+                    card.children.center:set_sprite_pos({x=3, y=5})
+                end
+            end
+            end
+        end
+    end
+},
+true
+)
+
 ------------------
 --BLINDS
 ------------------
@@ -579,7 +643,7 @@ SMODS.Blind:take_ownership('goad',
 {
     calculate = function (self, blind, context)
         if context.setting_blind then
-            play_sound('BStory_bahh', 1, 0.6)
+            play_sound('BStory_bahh', 1, 2)
             G.E_MANAGER:add_event(Event({
                 blocking = false,
                 func = function()
@@ -598,6 +662,15 @@ SMODS.Blind:take_ownership('goad',
 true
 )
 
+SMODS.Blind:take_ownership('mark',
+{
+    calculate = function (self, blind, context)
+        if context.setting_blind then
+            play_sound('BStory_mark', 1, 2)
+        end
+    end
+})
+
 --[[
 TO DO
 bean gives Bean quotes when triggered
@@ -611,5 +684,5 @@ Four Fingers nerf -> All Flushes and Straights can be made with  cards
 negative interest while in debt
 loyalty card buff -> x4 Mult every hands played
 scary face jumpscare sometimes
-shaking space joker makes it sick
+The Wheel -> after 7 cards played/discarded, cards drawn face down
 --]]

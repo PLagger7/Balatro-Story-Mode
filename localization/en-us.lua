@@ -1596,6 +1596,13 @@ return {
                     "played {C:attention}poker hand{}",
                 },
             },
+            j_BStory_sick_space={
+                name = 'Space Joker (But Sick)',
+                text={
+                    'Great, {C:attention}Space Joker{}',
+                    'is {C:green,E:1}sick{} now. Good job.'
+                }
+            },
             j_splash={
                 name="Splash",
                 text={
