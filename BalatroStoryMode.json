@@ -2,7 +2,7 @@
     "id": "balatrostorymode",
     "name": "Balatro Story Mode",
     "author": ["PLagger"],
-    "description": "what if balala but story",
+    "description": "A mod that adds a story to Balatro! (it's a comedy)     Most assets by PLagger, Raised Fist repaint by Splatter_Proto!",
     "prefix": "BStory",
     "main_file": "BalatroStoryMode.lua",
     "badge_colour": "b00b69",
