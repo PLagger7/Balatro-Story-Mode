@@ -6,3 +6,4 @@ MODS AND MODS THAT CHANGE THE en-us.lua FILE!!
 
 As the name of the mod implies, this is a mod full with a rich, 
 thought provoking narrative, full of goofs and gags!
+(note: this is actually a troll mod)
