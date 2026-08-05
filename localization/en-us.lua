@@ -1057,7 +1057,7 @@ return {
                 },
             },
             j_hit_the_road={
-                name="Hit the Road",
+                name="Hit Road the",
                 text={
                     "This Joker gains {X:mult,C:white} X#1# {} Mult",
                     "for every {C:attention}Jack{}",
@@ -2821,8 +2821,8 @@ return {
                 name="Death",
                 text={
                     "Select {C:attention}#1#{} cards,",
-                    "convert the {C:attention}left{} card",
-                    "into the {C:attention}right{} card",
+                    "convert the {C:attention}right{} card",
+                    "into the {C:attention}left{} card",
                     "{C:inactive}(Drag to rearrange)",
                 },
             },
