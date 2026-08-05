@@ -1405,6 +1405,13 @@ return {
                     "{C:inactive}(Currently {C:mult}+#2#{C:inactive} Mult)",
                 },
             },
+            j_BStory_missed_the_bus = {
+                name = 'Missed the Bus',
+                text = {
+                    '{s:2}Smell you later,',
+                    '{s:2.5,E:2,C:attention}sucka!!!!'
+                }
+            },
             j_riff_raff={
                 name="Riff-Raff",
                 text={

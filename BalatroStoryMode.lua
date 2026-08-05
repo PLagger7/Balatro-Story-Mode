@@ -47,6 +47,18 @@ SMODS.Sound({
     path = 'ralsei-splat.ogg',
     pitch = 1
 })
+
+SMODS.Sound({
+    key = 'driving',
+    path = 'snd_cardrive_bc.wav',
+    pitch = 1
+})
+
+SMODS.Sound({
+    key = 'rev',
+    path = 'snd_dogrev.wav',
+    pitch = 1
+})
 ------------------
 --FUNCTIONS
 ------------------
@@ -620,6 +632,53 @@ SMODS.Joker:take_ownership('space',
                     card.children.center:set_sprite_pos({x=3, y=5})
                 end
             end
+            end
+        end
+    end
+},
+true
+)
+
+SMODS.Joker:take_ownership('ride_the_bus',
+{
+    name = 'miss_the_bus',
+    atlas = 'repaints',
+    config = {extra = {mult_mod = 1, mult = 0}, missed = false},
+    loc_vars = function (self, info_queue, card)
+        return{
+            vars = {card.ability.extra.mult_mod, card.ability.extra.mult},
+            key = card.ability.missed and 'j_BStory_missed_the_bus' or nil
+        }
+    end,
+    pos = {x=1, y=6},
+
+    add_to_deck = function (self, card, from_debuff)
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                card.ability.missed = true
+                play_sound('BStory_rev', 1, 2)
+                return true
+            end
+        }))
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 4.1,
+            func = function ()
+                play_sound('BStory_driving', 1, 0.5)
+                card.disable_align = true
+                card.T.x = card.T.x + 100
+                SMODS.destroy_cards({card}, true, false, false)
+                return true
+            end
+        }))
+    end,
+
+    draw = function (self, card, layer)
+        if (layer == 'card' or layer == 'both') and (card.config.center.discovered or card.bypass_discovery_center) then
+            if card.ability.missed then
+                card.children.center:set_sprite_pos({x=6, y=16})
+            else
+                card.children.center:set_sprite_pos({x=1, y=6})
             end
         end
     end
