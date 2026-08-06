@@ -805,6 +805,7 @@ SMODS.Blind:take_ownership('mark',
     end
 })
 
+
 --[[
 TO DO
 bean gives Bean quotes when triggered
@@ -812,7 +813,6 @@ smiley face gives pricy air quotes
 doc glases on BUll [sic]
 chekcered deck is clubs and diamonds
 idol buff (Each played    gives x2 Mult when scored) [sic]
-Hit The Road -> Hit Road The (makes screen trans colored)
 flower pot buff -> x3 Mult if poker hand [sic]
 Four Fingers nerf -> All Flushes and Straights can be made with  cards
 negative interest while in debt
