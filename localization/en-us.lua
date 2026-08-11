@@ -372,11 +372,6 @@ return {
             },
         },
         Enhanced={
-            m_bonus={
-                name="Bonus Card",
-                text={
-                },
-            },
             m_glass={
                 name="Glass Card",
                 text={
@@ -388,7 +383,7 @@ return {
             m_gold={
                 name="Gold Card",
                 text={
-                    "{C:money}$#1#{} if this",
+                    "{C:money}#1#{} if this",
                     "card is held in hand",
                     "at end of round",
                 },
@@ -405,7 +400,7 @@ return {
             m_mult={
                 name="Mult Card",
                 text={
-                    "{C:mult}+#1#{} Mult",
+                    "{C:mult}#1#{} Mult",
                 },
             },
             m_steel={
@@ -419,7 +414,7 @@ return {
             m_stone={
                 name="Stone Card",
                 text={
-                    "{C:chips}+#1#{} Chips",
+                    "{C:chips}#1#{} Chips",
                     "no rank or suit",
                 },
             },
@@ -570,7 +565,7 @@ return {
                 },
             },
             j_brainstorm={
-                name="Brainstorm",
+                name="Brianstorm",
                 text={
                     "Copies the ability",
                     "of leftmost {C:attention}Joker",
@@ -581,7 +576,7 @@ return {
                 },
             },
             j_bull={
-                name="Bull",
+                name="BUll",
                 text={
                     "{C:chips}+#1#{} Chips for",
                     "each {C:money}$1{} you have",
@@ -1280,10 +1275,7 @@ return {
             j_odd_todd={
                 name="Odd Todd",
                 text={
-                    "Played cards with",
-                    "{C:attention}odd{} rank give",
-                    "{C:chips}+#1#{} Chips when scored",
-                    "{C:inactive}(A, 9, 7, 5, 3)",
+                    ''
                 },
             },
             j_onyx_agate={

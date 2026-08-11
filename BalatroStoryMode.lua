@@ -26,6 +26,12 @@ SMODS.Atlas{
     py = 26
 }
 
+SMODS.Atlas{
+    key = 'divorc',
+    path = 'divorc.png',
+    px = 1536,
+    py = 1024
+}
 ------------------
 --SOUNDS
 ------------------
@@ -686,6 +692,33 @@ SMODS.Joker:take_ownership('ride_the_bus',
 true
 )
 
+SMODS.Joker:take_ownership( 'odd_todd',
+{
+    divorc_sprite = nil,
+
+    loc_vars = function(self, info_queue, card)
+        if self.divorc_sprite and self.divorc_sprite.remove then
+            self.divorc_sprite:remove()
+            self.divorc_sprite = nil
+        end
+        self.divorc_sprite = Sprite(0, 0, 3.5, 3.5 *  1024 / 1536, G.ASSET_ATLAS.BStory_divorc, {x = 0, y = 0})
+
+        local main_end = {
+            {
+                n = G.UIT.C,
+                config = { align = "bm", minh = 2, padding = 0.1 },
+                nodes = {
+                    { n = G.UIT.O, config = { object = self.divorc_sprite } },
+                }
+            }
+        }
+        return {
+            main_end = main_end
+        }
+    end,
+},
+true)
+
 ------------------
 --TAROTS
 ------------------
@@ -803,7 +836,9 @@ SMODS.Blind:take_ownership('mark',
             play_sound('BStory_mark', 1, 2)
         end
     end
-})
+},
+true
+)
 
 
 --[[
