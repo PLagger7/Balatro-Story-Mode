@@ -1032,9 +1032,9 @@ return {
                 },
             },
             j_hanging_chad={
-                name="Hanging Chad",
+                name="Hanging Chud",
                 text={
-                    "Retrigger {C:attention}first{} played",
+                    "Retrigger {C:attention}second{} played",
                     "card used in scoring",
                     "{C:attention}#1#{} additional times",
                 },
