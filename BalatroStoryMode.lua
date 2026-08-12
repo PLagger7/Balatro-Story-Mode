@@ -730,11 +730,17 @@ true
 SMODS.Joker:take_ownership('hanging_chad',
 {
     name = 'hanging_chud',
-    config = {extra = {repetitions = 2}},
+    config = {extra = {repetitions = 2}, played = false},
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.repetitions } }
+        return {
+            vars = { card.ability.extra.repetitions },
+            key = card.ability.played and 'j_BStory_hanging_chud' or nil
+        }
     end,
     calculate = function(self, card, context)
+        if context.before and not card.ability.played then
+            card.ability.played = true
+        end
         if context.repetition and context.cardarea == G.play and context.other_card == context.scoring_hand[2] then
             return {
                 repetitions = card.ability.extra.repetitions
@@ -871,7 +877,6 @@ true
 TO DO
 bean gives Bean quotes when triggered
 smiley face gives pricy air quotes
-doc glases on BUll [sic]
 chekcered deck is clubs and diamonds
 idol buff (Each played    gives x2 Mult when scored) [sic]
 flower pot buff -> x3 Mult if poker hand [sic]

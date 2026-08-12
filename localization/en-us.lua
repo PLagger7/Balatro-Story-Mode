@@ -1031,7 +1031,7 @@ return {
                     "{C:inactive}(Must have room)",
                 },
             },
-            j_hanging_chad={
+            j_BStory_hanging_chud={
                 name="Hanging Chud",
                 text={
                     "Retrigger {C:attention}second{} played",
