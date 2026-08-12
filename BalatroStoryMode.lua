@@ -32,6 +32,7 @@ SMODS.Atlas{
     px = 1536,
     py = 1024
 }
+
 ------------------
 --SOUNDS
 ------------------
@@ -65,6 +66,13 @@ SMODS.Sound({
     path = 'snd_dogrev.wav',
     pitch = 1
 })
+
+SMODS.Sound({
+    key = 'bright',
+    path = 'snd_your_too_bright.wav',
+    pitch = 1
+})
+
 ------------------
 --FUNCTIONS
 ------------------
@@ -751,6 +759,32 @@ SMODS.Joker:take_ownership('hanging_chad',
 true
 )
 
+SMODS.Joker:take_ownership('campfire',
+{
+    config = {extra = 0.25, x_mult = 1, bright = false},
+    calculate = function (self, card, context)
+        if card.ability.x_mult >= 5 and not card.ability.bright then
+            card.ability.bright = true
+            G.E_MANAGER:add_event(Event({
+                func = function ()
+                    play_sound('BStory_bright', 1, 2)
+                    return true
+                end
+            }))
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = 4.1,
+                func = function ()
+                    SMODS.destroy_cards({card}, true, false, false)
+                    return true
+                end
+            }))
+        end
+    end
+},
+true
+)
+
 ------------------
 --TAROTS
 ------------------
@@ -876,7 +910,7 @@ true
 --[[
 TO DO
 bean gives Bean quotes when triggered
-smiley face gives pricy air quotes
+smiley face gives pricy air quotesg
 chekcered deck is clubs and diamonds
 idol buff (Each played    gives x2 Mult when scored) [sic]
 flower pot buff -> x3 Mult if poker hand [sic]

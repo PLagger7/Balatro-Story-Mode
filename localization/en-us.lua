@@ -2507,7 +2507,7 @@ return {
                 },
             },
             c_ouija={
-                name="Ouija",
+                name="Ouijadubbs",
                 text={
                     "Converts all cards",
                     "in hand to a single",
