@@ -108,6 +108,91 @@ SMODS.current_mod.calculate = function (self, context)
     if context.before then bool = true end
 end
 
+--Add speech bubbles to Jokers (thanks N)
+local function add_speech_bubble(self, text_key, align, loc_vars)
+    if self.children.speech_bubble then self.children.speech_bubble:remove() end
+    self.config.speech_bubble_align = { align = align or 'bm', offset = { x = 0, y = 0 }, parent = self }
+    self.children.speech_bubble =
+        UIBox {
+            definition = G.UIDEF.speech_bubble(text_key, loc_vars),
+            config = self.config.speech_bubble_align
+        }
+    self.children.speech_bubble:set_role {
+        role_type = 'Minor',
+        xy_bond = 'Weak',
+        r_bond = 'Strong',
+        major = self,
+    }
+    self.children.speech_bubble.states.visible = false
+end
+
+local function remove_speech_bubble(self)
+    if self.children.speech_bubble then
+        self.children.speech_bubble:remove(); self.children.speech_bubble = nil
+    end
+end
+
+local function say_stuff(self, n, not_first)
+    self.talking = true
+    if not not_first then
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.1,
+            func = function()
+                if self.children.speech_bubble then self.children.speech_bubble.states.visible = true end
+                say_stuff(self, n, true)
+                return true
+            end
+        }))
+    else
+        if n <= 0 then
+            self.talking = false; return
+        end
+        local new_said = math.random(1, 11)
+        while new_said == self.last_said do
+            new_said = math.random(1, 11)
+        end
+        self.last_said = new_said
+        self:juice_up(0.1, 0.05)
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            blockable = false,
+            blocking = false,
+            delay = 0.13,
+            func = function()
+                say_stuff(self, n - 1, true)
+                return true
+            end
+        }), 'tutorial')
+    end
+end
+
+local make_pricy_say_stuff = function (sprite)
+    local _, card = next(SMODS.find_card('j_smiley'))
+    if not card then return end
+    if sprite.frame_tick == 723 and sprite.say_stuff ~= 723 then
+        add_speech_bubble(card, "BStory_smiley_1", nil, { quip = true })
+        say_stuff(card, 3, false)
+
+        sprite.say_stuff = 723
+    end
+    if sprite.frame_tick == 766 and sprite.say_stuff ~= 766 then
+        add_speech_bubble(card, "BStory_smiley_2", nil, { quip = true })
+        say_stuff(card, 3, false)
+
+        sprite.say_stuff = 766
+    end
+    if sprite.frame_tick == 806 and sprite.say_stuff ~= 806 then
+        add_speech_bubble(card, "BStory_smiley_3", nil, { quip = true })
+        say_stuff(card, 3, false)
+
+        sprite.say_stuff = 806
+    end
+    if sprite.say_stuff and sprite.frame_tick >= 858 then
+        remove_speech_bubble(card)
+        sprite.say_stuff = nil
+    end
+end
 ------------------
 --JOKERS
 ------------------
