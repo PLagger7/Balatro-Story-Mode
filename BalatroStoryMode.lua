@@ -143,7 +143,12 @@ true
 SMODS.Joker:take_ownership('smiley',
 {
     atlas = 'repaints',
-    pos = {x=6, y=15}
+    pos = {x=6, y=15},
+    
+    calculate = function (self, card, context)
+        if context.before then
+        end
+    end
 },
 true
 )
@@ -1036,7 +1041,6 @@ chekcered deck is clubs and diamonds
 idol buff (Each played    gives x2 Mult when scored) [sic]
 flower pot buff -> x3 Mult if poker hand [sic]
 Four Fingers nerf -> All Flushes and Straights can be made with  cards
-negative interest while in debt
 loyalty card buff -> x4 Mult every hands played
 scary face jumpscare sometimes
 The Wheel -> after 7 cards played/discarded, cards drawn face down
