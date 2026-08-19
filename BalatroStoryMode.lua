@@ -450,9 +450,9 @@ SMODS.Joker:take_ownership('popcorn',
     name = 'popped_corn', --past tense cuz i ated it
     atlas = 'repaints',
     pos = {x=1, y=15},
-    config = { extra = { mult_loss = 4, mult = 20 }, eaten = false },
+    config = { extra = 4, mult = 20 , eaten = false },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.mult, card.ability.extra.mult_loss } }
+        return { vars = { card.ability.mult, card.ability.extra } }
     end,
     calculate = function(self, card, context)
         if context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint then
@@ -495,23 +495,23 @@ SMODS.Joker:take_ownership('ramen',
     name = 'rawmen', --:drool:
     atlas = 'repaints',
     pos = { x = 2, y = 15 },
-    config = { extra = { Xmult_loss = 0.01, Xmult = 2 } },
+    config = {x_mult = 2, extra = 0.01, eaten = false },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.Xmult, card.ability.extra.Xmult_loss }, eaten = false }
+        return { vars = { card.ability.x_mult, card.ability.extra, eaten = false }}
     end,
     calculate = function(self, card, context)
         if context.discard and not context.blueprint then
-            if card.ability.extra.Xmult - card.ability.extra.Xmult_loss <= 1 and not card.ability.eaten then
+            if card.ability.x_mult - card.ability.extra <= 1 and not card.ability.eaten then
                 card.ability.eaten = true
-                card.ability.extra.Xmult = card.ability.extra.Xmult - card.ability.extra.Xmult_loss
+                card.ability.x_mult = card.ability.x_mult - card.ability.extra
                 return {
                     message = localize('k_eaten_ex'),
                     colour = G.C.FILTER
                 }
             else
-                card.ability.extra.Xmult = card.ability.extra.Xmult - card.ability.extra.Xmult_loss
+                card.ability.x_mult = card.ability.x_mult - card.ability.extra
                 return {
-                    message = localize { type = 'variable', key = 'a_xmult_minus', vars = { card.ability.extra.Xmult_loss } },
+                    message = localize { type = 'variable', key = 'a_xmult_minus', vars = { card.ability.extra } },
                     colour = G.C.RED,
                     delay = 0.2
                 }
@@ -519,7 +519,7 @@ SMODS.Joker:take_ownership('ramen',
         end
         if context.joker_main then
             return {
-                xmult = card.ability.extra.Xmult
+                xmult = card.ability.x_mult
             }
         end
     end,
@@ -541,9 +541,9 @@ SMODS.Joker:take_ownership('selzer',
     name = 'seltza', --thunk please learn how to spell kthx
     atlas = 'repaints',
     pos = { x = 3, y = 15 },
-    config = { extra = { hands_left = 10 }, drank = false },
+    config = { extra = 10, drank = false },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.hands_left } }
+        return { vars = { card.ability.extra } }
     end,
     calculate = function(self, card, context)
         if context.repetition and context.cardarea == G.play then
@@ -552,17 +552,17 @@ SMODS.Joker:take_ownership('selzer',
             }
         end
         if context.after and not context.blueprint then
-            if card.ability.extra.hands_left - 1 <= 0 and not card.ability.drank then
+            if card.ability.extra - 1 <= 0 and not card.ability.drank then
                 card.ability.drank = true
-                card.ability.extra.hands_left = card.ability.extra.hands_left - 1
+                card.ability.extra = card.ability.extra - 1
                 return {
                     message = localize('k_drank_ex'),
                     colour = G.C.FILTER
                 }
             else
-                card.ability.extra.hands_left = card.ability.extra.hands_left - 1
+                card.ability.extra = card.ability.extra - 1
                 return {
-                    message = card.ability.extra.hands_left .. '',
+                    message = card.ability.extra .. '',
                     colour = G.C.FILTER
                 }
             end
@@ -622,16 +622,16 @@ SMODS.Joker:take_ownership('space',
 {
     name = 'spacey',
     atlas = 'repaints',
-    config = { extra = { odds = 4 }, shakey = 0, nausea = false },
+    config = { extra = 4, shakey = 0, nausea = false },
     loc_vars = function(self, info_queue, card)
-        local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'spacey')
+        local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra, 'spacey')
         return {
             vars = { numerator, denominator },
             key = card.ability.nausea and 'j_BStory_sick_space' or nil
         }
     end,
     calculate = function(self, card, context)
-        if context.before and SMODS.pseudorandom_probability(card, 'spacey', 1, card.ability.extra.odds)
+        if context.before and SMODS.pseudorandom_probability(card, 'spacey', 1, card.ability.extra)
             and not card.ability.nausea then
             return {
                 level_up = true,
@@ -825,6 +825,87 @@ SMODS.Joker:take_ownership('campfire',
 true
 )
 
+SMODS.Joker:take_ownership('brainstorm',
+{
+    name = 'brianstorm',
+    loc_vars = function(self, info_queue, card)
+        if card.area and card.area == G.jokers then
+            local compatible = G.jokers.cards[#G.jokers.cards] and G.jokers.cards[#G.jokers.cards] ~= card and
+                G.jokers.cards[#G.jokers.cards].config.center.blueprint_compat
+            local main_end = {
+                {
+                    n = G.UIT.C,
+                    config = { align = "bm", minh = 0.4 },
+                    nodes = {
+                        {
+                            n = G.UIT.C,
+                            config = { ref_table = card, align = "m", colour = compatible and mix_colours(G.C.GREEN, G.C.JOKER_GREY, 0.8) or mix_colours(G.C.RED, G.C.JOKER_GREY, 0.8), r = 0.05, padding = 0.06 },
+                            nodes = {
+                                { n = G.UIT.T, config = { text = ' ' .. localize('k_' .. (compatible and 'compatible' or 'incompatible')) .. ' ', colour = G.C.UI.TEXT_LIGHT, scale = 0.32 * 0.8 } },
+                            }
+                        }
+                    }
+                }
+            }
+            return { main_end = main_end }
+        end
+    end,
+    calculate = function(self, card, context)
+        local ret = SMODS.blueprint_effect(card, G.jokers.cards[#G.jokers.cards], context)
+        if ret then
+            ret.colour = G.C.RED
+        end
+        return ret
+    end,
+},
+true
+)
+
+
+SMODS.Joker:take_ownership('blueprint',
+{
+    name = 'bluerpint', --as in a more blue unit of volume
+    atlas = 'repaints',
+    pos = { x = 0, y = 3 },
+    loc_vars = function(self, info_queue, card)
+        if card.area and card.area == G.jokers then
+            local other_joker
+            for i = 1, #G.jokers.cards do
+                if G.jokers.cards[i] == card then other_joker = G.jokers.cards[i - 1] end
+            end
+            local compatible = other_joker and other_joker ~= card and other_joker.config.center.blueprint_compat
+            local main_end = {
+                {
+                    n = G.UIT.C,
+                    config = { align = "bm", minh = 0.4 },
+                    nodes = {
+                        {
+                            n = G.UIT.C,
+                            config = { ref_table = card, align = "m", colour = compatible and mix_colours(G.C.GREEN, G.C.JOKER_GREY, 0.8) or mix_colours(G.C.RED, G.C.JOKER_GREY, 0.8), r = 0.05, padding = 0.06 },
+                            nodes = {
+                                { n = G.UIT.T, config = { text = ' ' .. localize('k_' .. (compatible and 'compatible' or 'incompatible')) .. ' ', colour = G.C.UI.TEXT_LIGHT, scale = 0.32 * 0.8 } },
+                            }
+                        }
+                    }
+                }
+            }
+            return { main_end = main_end }
+        end
+    end,
+    calculate = function(self, card, context)
+        local other_joker = nil
+        for i = 1, #G.jokers.cards do
+            if G.jokers.cards[i] == card then other_joker = G.jokers.cards[i - 1] end
+        end
+        local ret = SMODS.blueprint_effect(card, other_joker, context)
+        if ret then
+            ret.colour = G.C.BLUE
+        end
+        return ret
+    end,
+},
+true
+)
 ------------------
 --TAROTS
 ------------------

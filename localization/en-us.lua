@@ -543,10 +543,10 @@ return {
                 },
             },
             j_blueprint={
-                name="Blueprint",
+                name="Bluerpint",
                 text={
                     "Copies ability of",
-                    "{C:attention}Joker{} to the right",
+                    "{C:attention}Joker{} to the left",
                 },
                 unlock={
                     "Win a run",
@@ -568,7 +568,7 @@ return {
                 name="Brianstorm",
                 text={
                     "Copies the ability",
-                    "of leftmost {C:attention}Joker",
+                    "of rightmost {C:attention}Joker",
                 },
                 unlock={
                     "Discard a",
