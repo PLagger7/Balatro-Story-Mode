@@ -1032,6 +1032,37 @@ SMODS.Blind:take_ownership('mark',
 true
 )
 
+SMODS.Blind:take_ownership('wheel',
+{
+    name = 'hweel',
+    seven_drawn = false,
+    calculate = function (self, blind, context)
+        if context.blind_disabled then
+            for i = 1, #G.hand.cards do
+                if G.hand.cards[i].facing == 'back' then
+                    G.hand.cards[i]:flip()
+                end
+            end
+            for _, playing_card in pairs(G.playing_cards) do
+                playing_card.ability.wheel_flipped = nil
+            end
+        end
+        if #G.playing_cards - #G.deck.cards == 7 and not blind.seven_drawn then
+            blind.seven_drawn = false
+            blind:juice_up()
+        end
+
+        if blind.disabled then return end
+
+        if context.stay_flipped and context.to_area == G.hand and #G.playing_cards - #G.deck.cards >= 7 then
+            return {
+                stay_flipped = true
+            }
+        end
+    end,
+},
+true
+)
 
 --[[
 TO DO
@@ -1043,5 +1074,4 @@ flower pot buff -> x3 Mult if poker hand [sic]
 Four Fingers nerf -> All Flushes and Straights can be made with  cards
 loyalty card buff -> x4 Mult every hands played
 scary face jumpscare sometimes
-The Wheel -> after 7 cards played/discarded, cards drawn face down
 --]]
