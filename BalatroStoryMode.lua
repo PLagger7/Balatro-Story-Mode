@@ -73,6 +73,11 @@ SMODS.Sound({
     pitch = 1
 })
 
+SMODS.Sound({
+    key = 'explosion',
+    path = 'snd_badexplosion.wav',
+    pitch = 1
+})
 ------------------
 --FUNCTIONS
 ------------------
@@ -270,7 +275,20 @@ true
 
 SMODS.Joker:take_ownership('obelisk',
 {
-    config = {extra = 0.25, x_mult = 1}
+    config = {extra = 0.5, x_mult = 1},
+    add_to_deck = function (self, card, from_debuff)
+        if not from_debuff then
+        card.ability.reset_h = card.T.h
+        end
+    end,
+    draw = function(self, card, layer)
+        card.ability._orig_h = card.ability._orig_h or card.T.h
+        if card.ability.x_mult <= 1 then
+            card.T.h = card.ability.reset_h or card.T.h
+        elseif card.ability.x_mult > 1 then
+            card.T.h = card.ability._orig_h + (card.ability.x_mult/1.5)
+        end
+    end
 },
 true
 )
@@ -730,7 +748,8 @@ true
 
 SMODS.Joker:take_ownership('bull',
 {
-    atlas = 'repaints'
+    atlas = 'repaints',
+    config = {extra = 2.5}
 },
 true
 )
@@ -761,6 +780,7 @@ true
 
 SMODS.Joker:take_ownership('campfire',
 {
+    atlas = 'repaints',
     config = {extra = 0.25, x_mult = 1, bright = false},
     calculate = function (self, card, context)
         if card.ability.x_mult >= 5 and not card.ability.bright then
@@ -773,14 +793,34 @@ SMODS.Joker:take_ownership('campfire',
             }))
             G.E_MANAGER:add_event(Event({
                 trigger = 'after',
-                delay = 4.1,
+                delay = 7.7,
                 func = function ()
+                    play_sound('BStory_explosion', 1, 1)
                     SMODS.destroy_cards({card}, true, false, false)
                     return true
                 end
             }))
         end
+    end,
+
+        draw = function (self, card, layer)
+        if (layer == 'card' or layer == 'both') and (card.config.center.discovered or card.bypass_discovery_center) then
+            if card.ability.x_mult >= 4.75 then
+                card.children.center:set_sprite_pos({x=5,y=17})
+            elseif card.ability.x_mult >= 3.75 then
+                card.children.center:set_sprite_pos({x=4,y=17})
+            elseif card.ability.x_mult >=2.75 then
+                card.children.center:set_sprite_pos({x=3,y=17})
+            elseif card.ability.x_mult >= 2.25 then
+                card.children.center:set_sprite_pos({x=1,y=17})
+            elseif card.ability.x_mult >= 1.75 then
+                card.children.center:set_sprite_pos({x=0,y=17})
+            else
+                card.children.center:set_sprite_pos({x=5,y=15})
+            end
+        end
     end
+
 },
 true
 )
